@@ -2,66 +2,34 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const dotenv = require('dotenv');
 
-// Don't rely on dotenv - use process.env directly
+dotenv.config();
+
 const app = express();
 
-// Middleware
+// Enable CORS for all origins
 app.use(cors());
 app.use(express.json());
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK', timestamp: new Date().toISOString() });
-});
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/leads', require('./routes/leads'));
 
-// Root endpoint
+// Test route
 app.get('/', (req, res) => {
-  res.json({ 
-    message: 'CRM API is running!',
-    status: 'active',
-    timestamp: new Date().toISOString()
-  });
+  res.json({ message: 'CRM API is running!' });
 });
 
-// Error handler
-app.use((err, req, res, next) => {
-  console.error('Error:', err);
-  res.status(500).json({ 
-    msg: 'Server error', 
-    error: process.env.NODE_ENV === 'production' ? 'Internal error' : err.message 
-  });
-});
-
-// MongoDB connection
-const MONGODB_URI = process.env.MONGODB_URI;
-const PORT = process.env.PORT || 5000;
-
-console.log('Starting server...');
-console.log('MONGODB_URI exists:', !!MONGODB_URI);
-console.log('PORT:', PORT);
-
-if (!MONGODB_URI) {
-  console.error('❌ MONGODB_URI is not defined in environment variables');
-  console.error('Please add MONGODB_URI in Render environment settings');
-  process.exit(1);
-}
-
-mongoose.connect(MONGODB_URI)
+// MongoDB Connection
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/crm_db')
   .then(() => {
     console.log('✅ Connected to MongoDB');
+    const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {
-      console.log(`✅ Server running on port ${PORT}`);
-      console.log(`📍 Health check: https://crm-backend.onrender.com/health`);
+      console.log(`✅ Server running on http://localhost:${PORT}`);
     });
   })
   .catch(err => {
-    console.error('❌ MongoDB connection error:', err.message);
-    process.exit(1);
+    console.error('❌ MongoDB error:', err.message);
   });
-
-module.exports = app;
