@@ -1,4 +1,4 @@
-// DASHBOARD COMPONENT
+// DASHBOARD COMPONENT - UPDATED FOR PRODUCTION
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import LeadDetail from './LeadDetail';
@@ -7,6 +7,7 @@ import Analytics from './Analytics';
 import EditLeadModal from './EditLeadModal';
 import LoadingSkeleton from './LoadingSkeleton';
 import toast, { Toaster } from 'react-hot-toast';
+import API_URL from '../config';
 
 const Dashboard = ({ token, setToken }) => {
   const [leads, setLeads] = useState([]);
@@ -32,7 +33,7 @@ const Dashboard = ({ token, setToken }) => {
 
   const fetchLeads = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/leads', {
+      const response = await axios.get(`${API_URL}/api/leads`, {
         headers: { 'x-auth-token': token }
       });
       setLeads(response.data);
@@ -49,7 +50,7 @@ const Dashboard = ({ token, setToken }) => {
 
   const updateStatus = async (leadId, newStatus) => {
     try {
-      await axios.put(`http://localhost:5000/api/leads/${leadId}/status`,
+      await axios.put(`${API_URL}/api/leads/${leadId}/status`,
         { status: newStatus },
         { headers: { 'x-auth-token': token } }
       );
@@ -63,7 +64,7 @@ const Dashboard = ({ token, setToken }) => {
   const deleteLead = async (leadId) => {
     if (window.confirm('Are you sure you want to delete this lead?')) {
       try {
-        await axios.delete(`http://localhost:5000/api/leads/${leadId}`, {
+        await axios.delete(`${API_URL}/api/leads/${leadId}`, {
           headers: { 'x-auth-token': token }
         });
         fetchLeads();
@@ -84,7 +85,7 @@ const Dashboard = ({ token, setToken }) => {
     if (window.confirm(`Delete ${selectedLeads.length} leads?`)) {
       try {
         await Promise.all(selectedLeads.map(id => 
-          axios.delete(`http://localhost:5000/api/leads/${id}`, {
+          axios.delete(`${API_URL}/api/leads/${id}`, {
             headers: { 'x-auth-token': token }
           })
         ));
@@ -105,7 +106,7 @@ const Dashboard = ({ token, setToken }) => {
     
     try {
       await Promise.all(selectedLeads.map(id => 
-        axios.put(`http://localhost:5000/api/leads/${id}/status`,
+        axios.put(`${API_URL}/api/leads/${id}/status`,
           { status: newStatus },
           { headers: { 'x-auth-token': token } }
         )
@@ -196,17 +197,17 @@ const Dashboard = ({ token, setToken }) => {
       
       <div className="header">
         <div>
-          <h1>Lead Management CRM</h1>
+          <h1>📊 Lead Management CRM</h1>
           <p style={{ color: 'white', marginTop: '5px' }}>
             {stats.total} total leads | {stats.conversionRate}% conversion rate
           </p>
         </div>
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
           <button onClick={() => setShowAnalytics(!showAnalytics)} className="btn btn-primary">
-            Analytics
+            📈 Analytics
           </button>
           <button onClick={exportToCSV} className="btn btn-success" style={{ background: '#28a745' }}>
-            Export CSV
+            📥 Export CSV
           </button>
           <button onClick={() => setShowAddModal(true)} className="btn btn-primary">
             + Add Lead

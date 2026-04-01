@@ -1,7 +1,8 @@
-// LOGIN COMPONENT
+// LOGIN COMPONENT - UPDATED FOR PRODUCTION
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import API_URL from '../config';  // Import the config
 
 const Login = ({ setToken }) => {
   const [username, setUsername] = useState('');
@@ -9,7 +10,7 @@ const Login = ({ setToken }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
-  const navigate = useNavigate(); // Add navigation hook
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +21,8 @@ const Login = ({ setToken }) => {
 
     try {
       const endpoint = isRegistering ? '/api/auth/register' : '/api/auth/login';
-      const url = `http://localhost:5000${endpoint}`;
+      // Use API_URL from config instead of localhost
+      const url = `${API_URL}${endpoint}`;
       console.log('Calling:', url);
       
       const response = await axios.post(url, {
@@ -36,10 +38,10 @@ const Login = ({ setToken }) => {
       // Force navigation to dashboard
       navigate('/');
       
-      setLoading(false);
     } catch (err) {
       console.error('Error details:', err);
       setError(err.response?.data?.msg || err.message || 'Authentication failed');
+    } finally {
       setLoading(false);
     }
   };
