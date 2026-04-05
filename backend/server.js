@@ -61,7 +61,7 @@ mongoose.connect(MONGODB_URI)
     console.log('✅ Connected to MongoDB Atlas');
     app.listen(PORT, () => {
       console.log(`✅ Server running on port ${PORT}`);
-      console.log(`📍 Health check: https://your-backend-url.onrender.com/health`);
+      console.log(`📍 Health check: https://crm-backend-aub8.onrender.com/health`);
     });
   })
   .catch(err => {
