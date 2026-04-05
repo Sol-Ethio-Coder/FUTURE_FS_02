@@ -9,7 +9,7 @@
   "keywords": [],
   "author": "Sol Ethio Coder",
   "license": "ISC",
-  "description": "",
+  "description": "CRM BACKEND API",
   "dependencies": {
     "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
