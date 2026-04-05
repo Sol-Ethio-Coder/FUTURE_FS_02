@@ -118,4 +118,3 @@ const EditLeadModal = ({ lead, onClose, onLeadUpdated, token }) => {
 };
 
 export default EditLeadModal;
-EOF
