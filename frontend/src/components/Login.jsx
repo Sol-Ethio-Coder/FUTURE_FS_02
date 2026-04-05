@@ -1,8 +1,8 @@
-// LOGIN COMPONENT - UPDATED FOR PRODUCTION
+// LOGIN COMPONENT
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import API_URL from '../config';  // Import the config
+import API_URL from '../config';
 
 const Login = ({ setToken }) => {
   const [username, setUsername] = useState('');
@@ -18,10 +18,11 @@ const Login = ({ setToken }) => {
     setLoading(true);
     
     console.log('Attempting to login with:', username);
+    console.log('API_URL:', API_URL);
 
     try {
+      // FIXED: Changed 'reqister' to 'register'
       const endpoint = isRegistering ? '/api/auth/register' : '/api/auth/login';
-      // Use API_URL from config instead of localhost
       const url = `${API_URL}${endpoint}`;
       console.log('Calling:', url);
       
@@ -31,11 +32,7 @@ const Login = ({ setToken }) => {
       });
       
       console.log('Response received:', response.data);
-      
-      // Set the token
       setToken(response.data.token);
-      
-      // Force navigation to dashboard
       navigate('/');
       
     } catch (err) {
