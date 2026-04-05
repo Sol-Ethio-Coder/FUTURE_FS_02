@@ -1,6 +1,7 @@
-// ADDLEADMODAL COMPONENT
+// ADD LEADMODAL COMPONENT
 import React, { useState } from 'react';
 import axios from 'axios';
+import API_URL from '../config';
 
 const AddLeadModal = ({ onClose, onLeadAdded, token }) => {
   const [formData, setFormData] = useState({
@@ -17,7 +18,8 @@ const AddLeadModal = ({ onClose, onLeadAdded, token }) => {
     setLoading(true);
     
     try {
-      await axios.post('http://localhost:5000/api/leads', formData);
+      // Use API_URL instead of localhost
+      await axios.post(`${API_URL}/api/leads`, formData);
       onLeadAdded();
       onClose();
     } catch (err) {

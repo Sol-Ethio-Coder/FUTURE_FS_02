@@ -1,7 +1,8 @@
-// EDITLEADMODAL COMPONENT
+// EDIT LEADMODAL COMPONENT
 import React, { useState } from 'react';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import API_URL from '../config';
 
 const EditLeadModal = ({ lead, onClose, onLeadUpdated, token }) => {
   const [formData, setFormData] = useState({
@@ -33,7 +34,7 @@ const EditLeadModal = ({ lead, onClose, onLeadUpdated, token }) => {
     setLoading(true);
     
     try {
-      await axios.put(`http://localhost:5000/api/leads/${lead._id}`, formData, {
+      await axios.put(`${API_URL}/api/leads/${lead._id}`, formData, {
         headers: { 'x-auth-token': token }
       });
       toast.success('Lead updated successfully');
@@ -117,3 +118,4 @@ const EditLeadModal = ({ lead, onClose, onLeadUpdated, token }) => {
 };
 
 export default EditLeadModal;
+EOF
